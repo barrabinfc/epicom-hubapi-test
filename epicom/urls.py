@@ -16,7 +16,9 @@ Including another URLconf
 from django.urls import path, include
 from django.contrib import admin
 
+from sku.urls import sku_urls
+
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('sku/', include('sku.urls'),
+    path('sku/', include(sku_urls),
 ]
