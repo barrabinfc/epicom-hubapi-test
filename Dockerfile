@@ -14,3 +14,8 @@ RUN pip install -r requirements.pip
 ENV PYTHONUNBUFFERED 1
 
 ADD . /app
+
+COPY ./entrypoint.sh /entrypoint.sh
+RUN chmod 755 /entrypoint.sh
+
+ENTRYPOINT ["./entrypoint.sh"]
