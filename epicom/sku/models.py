@@ -1,16 +1,24 @@
+
 from django.db import models
 
-class SKUCategory(models.Model):
-    """ Category to organize related sku (like color, dimensions) """ 
-    name = models.CharField(unique=True, blank=True, max_length=128)
-
-class SKUAttribute(models.Model):
+class Attribute(models.Model):
     """ Attributes for a product """
     name = models.CharField(unique=True, max_length=255)
-    valor = models.TextField(blank=True)
-    category = models.ForeignKey(SKUCategory,
-                                on_delete=models.SET_NULL,
-                                null=True )
+    value = models.TextField(blank=True)
+
+    def __str__(self):
+        return '{self.name}: {self.value}'
+
+class Category(models.Model):
+    """ Category to organize related sku (like color, dimensions) """ 
+    name  = models.CharField(unique=True, blank=True, max_length=128)
+    attrs = models.ManyToManyField(Attribute,
+                                related_name='categories',
+                                db_table='attrs2categories' )
+    
+    def __str__(self):
+        attrs_count = self.attrs.all().count()
+        return '{self.name}: {attrs_count} attributes'
 
 class SKU(models.Model):
     """
@@ -22,10 +30,11 @@ class SKU(models.Model):
     created_at  = models.DateField(auto_now_add=True)
     modified_at = models.DateField(auto_now=True)
 
-    parameters  = models.ManyToManyField(SKUAttribute, 
-                                    related_name="attribute",
-                                    related_query_name="attributes",
-                                    db_table='sku2attributes')
+    attributes  = models.ManyToManyField(Attribute, 
+                                    related_name="attrs",
+                                    related_query_name='skus',
+                                    db_table='attrs2skus')
 
     def __str__(self):
-        return '#sku:{self.id}'
+        attrs_count = self.attrs.all().count()
+        return '#sku:{self.id}: {attrs_count} attributes'
