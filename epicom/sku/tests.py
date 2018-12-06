@@ -1,5 +1,5 @@
 from django.test import TestCase
-import sku.models as SKUModels
+from .models import SKUCategory, SKUAttribute, SKU
 
 # Create your tests here.
 class SkuTestCase(TestCase):
@@ -8,7 +8,7 @@ class SkuTestCase(TestCase):
     """    
     def test_instance_category(self):
         """ Creating a new sku.models.SKUCategory (in memory) """
-        cat = SKUModels.SKUCategory(name='cor')
+        cat = SKUCategory(name='cor')
         self.assertEqual('cor', cat.name)
 
     def test_instance_attribute(self):
