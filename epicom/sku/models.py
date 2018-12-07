@@ -2,7 +2,18 @@
 from django.db import models
 
 class Attribute(models.Model):
-    """ Attributes for a product """
+    """ 
+        Generic Attributes for a SKU 
+        Value is a string, so anything can go in.
+
+        Be sure to explicitly cast before using.
+        If you need to store numbers and query it, use __number__ lookup
+
+            `example: Attributes.objects.filter(value__number__gte=10)`
+        
+        After getting your result back from DB, remembers it's 
+        still a string in python.
+    """
     name = models.CharField(max_length=255)
     value = models.TextField(blank=True)
 
@@ -14,7 +25,7 @@ class Attribute(models.Model):
         indexes = [
             models.Index(fields=['name']),
         ]
-
+    
 class Category(models.Model):
     """ Category to organize related sku (like color, dimensions) """ 
     name  = models.CharField(unique=True, blank=True, max_length=128)
