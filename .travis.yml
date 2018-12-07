@@ -1,5 +1,7 @@
 dist: xenial
 language: python
+cache: pip
+
 python:
   - "3.5"
   - "3.6"
@@ -10,7 +12,7 @@ env:
 
 install:
   - pip install -r requirements.pip
-  - python3 manage.py migrate  
+  - python manage.py migrate
 
 script:
-  - python3 manage.py test
+  - python manage.py test
