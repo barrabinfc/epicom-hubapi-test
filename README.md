@@ -3,7 +3,9 @@
 Epicom teste
 ============
 
-It's packaged as a docker container, while the database is single sqlite3 stored under db/
+A REST API for SKU<->products mapping.
+It's packaged as a docker container,
+while the sqlite db is under host stored named db.sqlite3
 
 - [Quickstart](#quickstart)
     - [Start Daemon](#start-daemon)
