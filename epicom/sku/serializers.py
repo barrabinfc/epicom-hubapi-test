@@ -1,17 +1,40 @@
-from epicom.sku.models import Attribute, Category, SKU
+
 from rest_framework import serializers
+from epicom.sku.models import Attribute, Category, SKU
 
-class CategorySerializer(serializers.HyperlinkedModelSerializer):
-    class Meta:
-        model = Category
-        fields = ('name', 'categories')
-
-class SKUSerializer(serializers.HyperlinkedModelSerializer):
-    class Meta:
-        model = SKU
-        fields = ('name', 'created_at','modified_at','attrs')
-
-class AttributeSerializer(serializers.HyperlinkedModelSerializer):
+class SimpleAttrSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Attribute
-        fields = ('name', 'value','sku')
+        fields = ('id','name','value')
+
+class SimpleCategorySerializer(serializers.HyperlinkedModelSerializer):
+    class Meta:
+        model = Category
+        fields = ('id','url','name')
+
+class SimpleSKUSerializer(serializers.HyperlinkedModelSerializer):
+    class Meta:
+        model = SKU
+        fields = ('url','id','name')
+
+class AttributeSerializer(serializers.HyperlinkedModelSerializer):
+    categories = SimpleCategorySerializer(many=True, required=False)
+    class Meta:
+        model = Attribute
+        fields = ('id','name','value','categories')
+        depth = 1
+
+class CategorySerializer(serializers.HyperlinkedModelSerializer ):
+    attrs = SimpleAttrSerializer(many=True)
+    class Meta:
+        model = Category
+        fields = ('id','url','name','attrs')
+        depth = 1
+
+class SKUSerializer(serializers.ModelSerializer):
+    attrs = AttributeSerializer(many=True,required=False)
+    class Meta:
+        model = SKU
+        fields = ('id','name', 'created_at','modified_at', 'attrs')
+        depth = 1
+
