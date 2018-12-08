@@ -16,11 +16,13 @@ Including another URLconf
 from django.urls import path, include
 from django.contrib import admin
 
-from .sku.urls import urlpatterns as sku_urls
+from epicom.sku.urls import urlpatterns as sku_urls
+from epicom.api.urls import urlpatterns as api_urls
 #from .produto.urls import urlpatterns as produto_urls
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('sku/', include(sku_urls)),
+    path(r'api/', include(api_urls))
     #path('produto/', include(produto_urls))
 ]

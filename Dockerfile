@@ -3,7 +3,7 @@ FROM python:3.7-alpine
 RUN apk update \
   && apk add \
     build-base \
-    sqlite-dev 
+    sqlite-dev
 
 RUN mkdir /app
 WORKDIR /app
@@ -19,3 +19,4 @@ COPY ./entrypoint.sh /entrypoint.sh
 RUN chmod 755 /entrypoint.sh
 
 ENTRYPOINT ["./entrypoint.sh"]
+CMD ["python", "manage.py", "runserver", "0.0.0.0:8000"]

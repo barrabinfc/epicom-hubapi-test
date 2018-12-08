@@ -30,7 +30,7 @@ while the sqlite db is under host stored named db.sqlite3
 
 |username |password  |
 |:------- |:-------  |
-|epicom   |qwertyuiop|
+|root     |qwertyuiop|
 
 # Run Tests
 

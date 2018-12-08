@@ -2,16 +2,16 @@
 from django.db import models
 
 class Attribute(models.Model):
-    """ 
-        Generic Attributes for a SKU 
+    """
+        Generic Attributes for a SKU
         Value is a string, so anything can go in.
 
         Be sure to explicitly cast before using.
         If you need to store numbers and query it, use __number__ lookup
 
             `example: Attributes.objects.filter(value__number__gte=10)`
-        
-        After getting your result back from DB, remembers it's 
+
+        After getting your result back from DB, remembers it's
         still a string in python.
     """
     name = models.CharField(max_length=255)
@@ -25,18 +25,18 @@ class Attribute(models.Model):
         indexes = [
             models.Index(fields=['name']),
         ]
-    
+
 class Category(models.Model):
-    """ Category to organize related sku (like color, dimensions) """ 
+    """ Category to organize related sku (like color, dimensions) """
     name  = models.CharField(unique=True, blank=True, max_length=128)
     attrs = models.ManyToManyField(Attribute,
                                 related_name='categories',
                                 related_query_name='categories',
                                 db_table='attrs2categories' )
-    
+
     def count_attrs(self,m_filter=models.Q()):
         return self.attrs.filter(m_filter).count()
-    
+
     def __str__(self):
         attrs_count = self.count_attrs()
         return "%s: %d attributes" % (self.name, attrs_count)
@@ -45,15 +45,15 @@ class SKU(models.Model):
     """
         A Nested Set Modifier for a product.
     """
-    # product = models.ManyToManyField('Product', 
+    # product = models.ManyToManyField('Product',
     #                       db_name='product2sku',
-    #              
+    #
     #          )
     name        = models.CharField(max_length=255, blank=True)
     created_at  = models.DateField(auto_now_add=True)
     modified_at = models.DateField(auto_now=True)
 
-    attrs  = models.ManyToManyField(Attribute, 
+    attrs  = models.ManyToManyField(Attribute,
                                     related_name="sku",
                                     related_query_name='skus',
                                     db_table='attrs2skus')
